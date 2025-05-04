@@ -5,114 +5,296 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaScript DOM Manipulation</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary: #6C63FF;
+            --secondary: #4C40F7;
+            --accent: #FF6584;
+            --light: #F8F9FA;
+            --dark: #2D2B55;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --border-radius: 12px;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7ff;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 101, 132, 0.1) 0%, transparent 20%);
+            color: #333;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
-            transition: background-color 0.5s;
+            padding: 30px;
+            transition: all 0.5s ease;
+            line-height: 1.6;
         }
         
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        h1 {
+            color: var(--dark);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: #666;
         }
         
         main {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
         }
         
         section {
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 8px;
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, transparent 50%, rgba(108, 99, 255, 0.1) 50%);
+            border-bottom-left-radius: 100%;
+        }
+        
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2::before {
+            content: '▹';
+            color: var(--accent);
+            margin-right: 10px;
+            font-size: 1.8rem;
         }
         
         .interaction-panel {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
         }
         
         button {
-            padding: 10px 15px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 4px;
-            background-color: #4285f4;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         button:hover {
-            background-color: #3367d6;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #change-color-btn {
+            background: linear-gradient(135deg, #e74c3c, #e67e22);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        #change-color-btn:hover {
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+            background: linear-gradient(135deg, #e67e22, #e74c3c);
+        }
+        
+        #toggle-highlight-btn {
+            background: linear-gradient(135deg, #f39c12, #f1c40f);
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        #toggle-highlight-btn:hover {
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+        }
+        
+        #change-theme-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        #change-theme-btn:hover {
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
         }
         
         .elements-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 15px;
+            margin-top: 20px;
         }
         
         .dynamic-element {
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-radius: 4px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+            cursor: pointer;
+        }
+        
+        .dynamic-element:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         }
         
         .highlight {
-            background-color: #ffeb3b;
+            background-color: #fff3cd;
             font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border-left: 4px solid var(--warning);
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.15);
+        }
+        
+        #dynamic-text, #style-text {
+            font-size: 1.1rem;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .dark-theme {
+            background-color: var(--dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 101, 132, 0.15) 0%, transparent 20%);
+            color: var(--light);
+        }
+        
+        .dark-theme section {
+            background-color: #383664;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dark-theme #dynamic-text, 
+        .dark-theme #style-text {
+            background-color: #2D2B55;
+            color: var(--light);
+        }
+        
+        .dark-theme .dynamic-element {
+            background-color: #2D2B55;
+            color: var(--light);
         }
         
         footer {
-            margin-top: 40px;
+            margin-top: 60px;
             text-align: center;
-            font-size: 0.9em;
+            padding: 20px;
+            border-top: 1px solid rgba(108, 99, 255, 0.2);
+            font-size: 0.95rem;
             color: #666;
+            position: relative;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Learning JavaScript DOM Manipulation</h1>
-        <p>Interact with the elements below to see JavaScript in action!</p>
+        <h1>Interactive DOM Wizardry</h1>
+        <p>Explore the magic of JavaScript by interacting with the elements below!</p>
     </header>
     
     <main>
         <section>
-            <h2>Text Manipulation</h2>
-            <p id="dynamic-text">This text will change when you click the button below.</p>
-            <button id="change-text-btn">Change Text</button>
-        </section>
-        
-        <section>
-            <h2>Style Manipulation</h2>
-            <p id="style-text">This text will be styled differently.</p>
+            <h2>Text Transformation</h2>
+            <p id="dynamic-text">This text is waiting for your command to transform...</p>
             <div class="interaction-panel">
-                <button id="change-color-btn">Change Text Color</button>
-                <button id="toggle-highlight-btn">Toggle Highlight</button>
-                <button id="change-theme-btn">Toggle Dark/Light Theme</button>
+                <button id="change-text-btn"> Transform Text</button>
             </div>
         </section>
         
         <section>
-            <h2>Element Creation & Removal</h2>
+            <h2>Style Sorcery</h2>
+            <p id="style-text">Unleash your creativity by changing my appearance!</p>
             <div class="interaction-panel">
-                <button id="add-element-btn">Add Element</button>
-                <button id="remove-element-btn">Remove Last Element</button>
+                <button id="change-color-btn"> Change Color</button>
+                <button id="toggle-highlight-btn"> Highlight Magic</button>
+                <button id="change-theme-btn"> Dark/Light Mode</button>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Element Conjuring</h2>
+            <div class="interaction-panel">
+                <button id="add-element-btn"> Conjure Element</button>
+                <button id="remove-element-btn"> Vanish Element</button>
             </div>
             <div id="elements-container" class="elements-container">
-                <!-- Dynamic elements will be added here -->
+                <!-- Conjured elements will appear here -->
             </div>
         </section>
     </main>
     
     <footer>
-        <p>Created for learning JavaScript DOM manipulation</p>
+        <p> Crafted with JavaScript magic and DOM manipulation </p>
+        <p class="footer-note">Click any button to see the power of JavaScript in action!</p>
     </footer>
     
     <script src="script.js"></script>
