@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript DOM Manipulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: background-color 0.5s;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .interaction-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4285f4;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #3367d6;
+        }
+        
+        .elements-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .dynamic-element {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+        
+        .highlight {
+            background-color: #ffeb3b;
+            font-weight: bold;
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Learning JavaScript DOM Manipulation</h1>
+        <p>Interact with the elements below to see JavaScript in action!</p>
+    </header>
+    
+    <main>
+        <section>
+            <h2>Text Manipulation</h2>
+            <p id="dynamic-text">This text will change when you click the button below.</p>
+            <button id="change-text-btn">Change Text</button>
+        </section>
+        
+        <section>
+            <h2>Style Manipulation</h2>
+            <p id="style-text">This text will be styled differently.</p>
+            <div class="interaction-panel">
+                <button id="change-color-btn">Change Text Color</button>
+                <button id="toggle-highlight-btn">Toggle Highlight</button>
+                <button id="change-theme-btn">Toggle Dark/Light Theme</button>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Element Creation & Removal</h2>
+            <div class="interaction-panel">
+                <button id="add-element-btn">Add Element</button>
+                <button id="remove-element-btn">Remove Last Element</button>
+            </div>
+            <div id="elements-container" class="elements-container">
+                <!-- Dynamic elements will be added here -->
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>Created for learning JavaScript DOM manipulation</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
